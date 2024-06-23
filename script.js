@@ -1,6 +1,7 @@
 const nameRiley = "Riley";
 const nameBob = "Bob";
 
+const scoreBoard = document.querySelector("#score-board");
 let users = [];
 let cells = [];
 var currentTurnUser;
@@ -13,7 +14,6 @@ function createGrid() {
     var gameCell = document.createElement("div");
     gameCell.className = "game-cell";
     gameCell.id = `cell${i}`;
-    gameCell.textContent = `${i}`;
     gameCell.addEventListener("click", tickTheCell);
     gameField.appendChild(gameCell);
     cells.push(gameCell);
@@ -65,12 +65,18 @@ function checkForWin() {
       cellTextContents[a] === cellTextContents[b] &&
       cellTextContents[a] === cellTextContents[c]
     ) {
-      console.log(`Player with ${cellTextContents[a]} wins!`);
-      return true;
+      currentTurnUser.wins += 1;
+      scoreBoard.textContent = `Score: ${users[0].wins}/${users[1].wins}`;
+      gamesCount += 1;
+      stopGame();
     }
-    // No winner found
-    return false;
+    scoreBoard.textContent = `Score: ${users[0].wins}/${users[1].wins}`;
   }
+}
+function stopGame() {
+  const gameField = document.querySelector("#game-field");
+  gameField.innerHTML = "";
+  gameField.textContent = `Round ${gamesCount} is finished. The winner is ${currentTurnUser.name}`;
 }
 function createGame(name1, name2) {
   users = [];
